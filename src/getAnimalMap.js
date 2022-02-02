@@ -82,19 +82,30 @@ function findSex(sex) {
     }));
   return temp;
 }
+function findSexSort(sex) {
+  resetTemp();
+  const locals = ['NE', 'NW', 'SE', 'SW'];
+  locals.forEach((local) => species.filter((specie) => specie.location === local)
+    .forEach((animal) => {
+      temp[local].push({ [animal.name]: animal.residents.filter((each) => each.sex === sex)
+        .map((each1) => each1.name).sort() });
+    }));
+  return temp;
+}
 
 function getAnimalMap(options) {
   if (!options || !options.includeNames) {
     return noParam();
   }
+  if (options.sex && options.sorted) {
+    return findSexSort(options.sex);
+  }
   if (options.sorted) {
     return sortedName();
   }
   if (options.sex) {
-    const param = options.sex;
-    return findSex(param);
+    return findSex(options.sex);
   }
   return nameInclude();
 }
-
 module.exports = getAnimalMap;
