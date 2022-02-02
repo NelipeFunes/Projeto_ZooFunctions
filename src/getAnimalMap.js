@@ -81,8 +81,7 @@ function findSex(sex, sort) {
         temp[local].push({ [animal.name]: animal.residents.filter((each) => each.sex === sex)
           .map((each1) => each1.name) });
       }));
-  }
-  if (sort === true) {
+  } else {
     const locals = ['NE', 'NW', 'SE', 'SW'];
     locals.forEach((local) => species.filter((specie) => specie.location === local)
       .forEach((animal) => {
