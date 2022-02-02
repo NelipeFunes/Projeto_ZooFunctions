@@ -72,40 +72,50 @@ function sortedName() {
   return temp;
 }
 
-function findSex(sex) {
+function findSex(sex, sort) {
   resetTemp();
-  const locals = ['NE', 'NW', 'SE', 'SW'];
-  locals.forEach((local) => species.filter((specie) => specie.location === local)
-    .forEach((animal) => {
-      temp[local].push({ [animal.name]: animal.residents.filter((each) => each.sex === sex)
-        .map((each1) => each1.name) });
-    }));
+  if (typeof sort === 'undefined') {
+    const locals = ['NE', 'NW', 'SE', 'SW'];
+    locals.forEach((local) => species.filter((specie) => specie.location === local)
+      .forEach((animal) => {
+        temp[local].push({ [animal.name]: animal.residents.filter((each) => each.sex === sex)
+          .map((each1) => each1.name) });
+      }));
+  }
+  if (sort === true) {
+    const locals = ['NE', 'NW', 'SE', 'SW'];
+    locals.forEach((local) => species.filter((specie) => specie.location === local)
+      .forEach((animal) => {
+        temp[local].push({ [animal.name]: animal.residents.filter((each) => each.sex === sex)
+          .map((each1) => each1.name).sort() });
+      }));
+  }
   return temp;
 }
-function findSexSort(sex) {
-  resetTemp();
-  const locals = ['NE', 'NW', 'SE', 'SW'];
-  locals.forEach((local) => species.filter((specie) => specie.location === local)
-    .forEach((animal) => {
-      temp[local].push({ [animal.name]: animal.residents.filter((each) => each.sex === sex)
-        .map((each1) => each1.name).sort() });
-    }));
-  return temp;
-}
+// function findSexSort(sex) {
+//   resetTemp();
+//   const locals = ['NE', 'NW', 'SE', 'SW'];
+//   locals.forEach((local) => species.filter((specie) => specie.location === local)
+//     .forEach((animal) => {
+//       temp[local].push({ [animal.name]: animal.residents.filter((each) => each.sex === sex)
+//         .map((each1) => each1.name).sort() });
+//     }));
+//   return temp;
+// }
 
 function getAnimalMap(options) {
   if (!options || !options.includeNames) {
     return noParam();
   }
-  if (options.sex && options.sorted) {
-    return findSexSort(options.sex);
+  if (options.sex) {
+    console.log(options.sorted);
+    return findSex(options.sex, options.sorted);
   }
   if (options.sorted) {
     return sortedName();
   }
-  if (options.sex) {
-    return findSex(options.sex);
-  }
   return nameInclude();
 }
+// const options = { includeNames: true, sex: 'female' };
+// console.log(JSON.stringify(getAnimalMap(options)));
 module.exports = getAnimalMap;
